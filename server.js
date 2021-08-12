@@ -40,7 +40,7 @@ app.use('/cart', routerCart);
 
 
 /*----BOLLEAN ADMIN----*/
-// const admin = true;
+const admin = true;
 // const admin = false;
 
 
@@ -57,7 +57,7 @@ routerProducts.post('/add', (req, res) => {
 
     if (admin) {
 
-        const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = stock.listOfStock.length+1);
+        const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = stock.listOfStock.length+1, description = req.body.description, code = req.body.code, stocked = req.body.stocked);
     
         const productAdd = stock.addProduct(newProduct);
         res.json(productAdd);

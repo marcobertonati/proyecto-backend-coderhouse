@@ -15,6 +15,8 @@ class Stock {
     }
 
     showProductOfStock = (id) => {
+        console.log('Ingresó a función');
+        console.log(id);
 
         const productExist = this.listOfStock.some(product => id == product.id);
 
