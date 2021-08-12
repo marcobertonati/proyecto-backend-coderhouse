@@ -122,6 +122,11 @@ routerCart.delete('/delete/:id', (req,res) =>{
     res.json(productDeleted)
 })
 
+/*Ruta de prueba para probar info de carrito: te muestra el ID del carrito, el timestamp y todos los productos */
+routerCart.get('/infocart', (req,res)=>{
+    res.json(cart.showDataCart())
+})
+
 
 /*-------------------*/
 /*Ejecución de servidor*/

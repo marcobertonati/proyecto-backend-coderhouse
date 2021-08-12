@@ -1,10 +1,21 @@
 class Cart {
 
-    cartContent = [];
+    // cartContent = [];
+    idCart = 1;
 
-    constructor(cart) {
-        this.cart = cart;
-    
+    constructor() {
+        this.id = Cart.idCart++,
+        this.timestamp = Date.now(),
+        this.cartContent = []
+    }
+
+     
+
+    showDataCart = () => {
+        console.log(this.id);
+        console.log(this.timestamp);
+        console.log(this.cartContent);
+        return { id: this.id, timestamp: this.timestamp, products: this.cartContent}
     }
 
     showCart = (id) => {
