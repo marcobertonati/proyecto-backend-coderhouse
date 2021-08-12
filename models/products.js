@@ -1,10 +1,10 @@
 class Products {
 
-    constructor(title, price, thumbnail, id, description, code, stocked) {
+    constructor(title, price, thumbnail,id, description, code, stocked) {
+        this.id= id,
         this.title = title, 
         this.price = price,
         this.thumbnail = thumbnail,
-        this.id = id,
         this.timestamp = Date.now(),
         this.description = description,
         this.code = code,

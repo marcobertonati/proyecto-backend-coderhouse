@@ -1,12 +1,12 @@
 class Cart {
 
-    // cartContent = [];
-    idCart = 1;
+    cartContent = [];
+    idOnCart = 1;
 
     constructor() {
-        this.id = Cart.idCart++,
-        this.timestamp = Date.now(),
-        this.cartContent = []
+        // this.id = Cart.idCart++,
+        // this.timestamp = Date.now(),
+        // this.cartContent = []
     }
 
      
@@ -27,7 +27,15 @@ class Cart {
     }
 
     addToCart = (product) => {
-        this.cartContent.push(product)
+
+        console.log(product);
+        
+        const newProduct = {
+            id: this.idOnCart++,
+            timestampCart: Date.now(),
+            product: {...product}
+        }
+        this.cartContent.push(newProduct)
     }
 
     deleteProduct = (id) => {

@@ -57,7 +57,13 @@ routerProducts.post('/add', (req, res) => {
 
     if (admin) {
 
-        const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = stock.listOfStock.length+1, description = req.body.description, code = req.body.code, stocked = req.body.stocked);
+        let lastId = 0
+        if(stock.listOfStock[stock.listOfStock.length-1]!= undefined) {
+            lastId = stock.listOfStock[stock.listOfStock.length-1].id;
+            console.log(lastId);
+        }
+
+        const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = lastId+1, description = req.body.description, code = req.body.code, stocked = req.body.stocked);
     
         const productAdd = stock.addProduct(newProduct);
         res.json(productAdd);
