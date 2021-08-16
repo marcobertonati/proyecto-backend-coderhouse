@@ -19,6 +19,8 @@ const { Cart } = require('./models/cart');
 const cart = new Cart;
 const { Stock } = require('./models/stock');
 const stock = new Stock;
+const { Archivo } = require ('./models/archivo');
+const archivoStock = new Archivo ('stock.txt')
 
 
 /* Requiero FS: FileSystem: para manejo de archivos */
@@ -49,6 +51,7 @@ const admin = true;
 /*Consulta lista de productos en el stock */
 routerProducts.get('/list/:id?', (req, res) => {
     const productsStock = stock.showStock(req.params.id);
+    archivoStock.readFile('stock.txt')
     res.json(productsStock);
 });
 
@@ -66,6 +69,7 @@ routerProducts.post('/add', (req, res) => {
         const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = lastId+1, description = req.body.description, code = req.body.code, stocked = req.body.stocked);
     
         const productAdd = stock.addProduct(newProduct);
+        archivoStock.writeFile(stock.listOfStock);        
         res.json(productAdd);
 
     } else {

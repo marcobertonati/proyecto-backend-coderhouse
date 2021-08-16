@@ -1,0 +1,22 @@
+[
+	{
+		"id": 1,
+		"title": "remera",
+		"price": 2000,
+		"thumbnail": "www.adidas.com.ar",
+		"timestamp": 1629125581635,
+		"description": "Remera 100% algodón de alta calidad",
+		"code": 1565641899,
+		"stocked": 20
+	},
+	{
+		"id": 2,
+		"title": "gorro",
+		"price": 2000,
+		"thumbnail": "www.adidas.com.ar",
+		"timestamp": 1629125593014,
+		"description": "Remera 100% algodón de alta calidad",
+		"code": 1565641899,
+		"stocked": 20
+	}
+]
