@@ -83,6 +83,7 @@ routerProducts.put('/update/:id', (req,res) => {
     if (admin) {
 
         const productUpload = stock.updateProduct({id: req.params.id, product: req.body})
+        archivoStock.writeFile(stock.listOfStock);        
         res.json(productUpload);
 
     } else {
@@ -97,6 +98,7 @@ routerProducts.delete('/delete/:id', (req, res) => {
     if (admin) {
         
         const productDeleted = stock.deleteProduct(req.params.id);
+        archivoStock.writeFile(stock.listOfStock);        
         res.json(productDeleted);
 
     } else {
