@@ -1,6 +1,5 @@
 const fs = require ('fs');
 
-
 class Archivo {
 
     constructor(file) {
@@ -9,16 +8,26 @@ class Archivo {
     }
 
     async writeFile (data) {
-        await fs.promises.writeFile(this.file, JSON.stringify(data, null, '\t'));
+
+        try {
+            
+            await fs.promises.writeFile(this.file, JSON.stringify(data, null, '\t'));
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async readFile (data) {
-        const stock = await fs.promises.readFile(data, this.encoding);
-        const stockJS = JSON.parse(stock)
-        console.log(stockJS);
 
+        try {
+            const stock = await fs.promises.readFile(data, this.encoding);
+            const stockJS = JSON.parse(stock)
+            console.log(stockJS);
+        } catch (error) {
+            console.log(error);
+        }
+      
     }
-
 }
 
 module.exports = { Archivo }
