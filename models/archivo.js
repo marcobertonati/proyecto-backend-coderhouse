@@ -8,12 +8,12 @@ class Archivo {
         this.encoding = "utf8"
     }
 
-    async writeFile (dataStock) {
-        await fs.promises.writeFile(this.file, JSON.stringify(dataStock, null, '\t'));
+    async writeFile (data) {
+        await fs.promises.writeFile(this.file, JSON.stringify(data, null, '\t'));
     }
 
-    async readFile (dataStock) {
-        const stock = await fs.promises.readFile(dataStock, this.encoding);
+    async readFile (data) {
+        const stock = await fs.promises.readFile(data, this.encoding);
         const stockJS = JSON.parse(stock)
         console.log(stockJS);
 

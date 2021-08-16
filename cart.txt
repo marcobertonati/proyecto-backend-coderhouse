@@ -1,0 +1,30 @@
+[
+	{
+		"id": 1,
+		"timestampCart": 1629126461906,
+		"product": {
+			"id": 2,
+			"title": "Remera",
+			"price": 2000,
+			"thumbnail": "www.adidas.com.ar",
+			"timestamp": 1629126448989,
+			"description": "Remera 100% algodón de alta calidad",
+			"code": 1565641899,
+			"stocked": 20
+		}
+	},
+	{
+		"id": 3,
+		"timestampCart": 1629126487342,
+		"product": {
+			"id": 2,
+			"title": "Remera",
+			"price": 2000,
+			"thumbnail": "www.adidas.com.ar",
+			"timestamp": 1629126448989,
+			"description": "Remera 100% algodón de alta calidad",
+			"code": 1565641899,
+			"stocked": 20
+		}
+	}
+]

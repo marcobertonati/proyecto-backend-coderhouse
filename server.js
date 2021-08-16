@@ -20,11 +20,9 @@ const cart = new Cart;
 const { Stock } = require('./models/stock');
 const stock = new Stock;
 const { Archivo } = require ('./models/archivo');
-const archivoStock = new Archivo ('stock.txt')
+const archivoStock = new Archivo ('stock.txt');
+const archivoCart = new Archivo ('cart.txt');
 
-
-/* Requiero FS: FileSystem: para manejo de archivos */
-const fs = require('fs');
 
 /*Body Parser: ya no es necesario */
 const bodyParser = require("body-parser");
@@ -46,12 +44,11 @@ const admin = true;
 // const admin = false;
 
 
-
 /*------RUTAS STOCK-------*/
 /*Consulta lista de productos en el stock */
 routerProducts.get('/list/:id?', (req, res) => {
     const productsStock = stock.showStock(req.params.id);
-    archivoStock.readFile('stock.txt')
+    archivoStock.readFile('stock.txt');
     res.json(productsStock);
 });
 
@@ -111,6 +108,7 @@ routerProducts.delete('/delete/:id', (req, res) => {
 /*Consulta lista de productos en carrito */
 routerCart.get('/list/:id?', (req, res) => {
     const productsOnCart = cart.showCart(req.params.id);
+    archivoCart.readFile('cart.txt');
     res.json(productsOnCart);
 });
 
@@ -121,6 +119,7 @@ routerCart.post('/add/:id_producto', (req, res) => {
 
     if (productFinded.exist) {
         cart.addToCart(productFinded.product);
+        archivoCart.writeFile(cart.cartContent);
         res.json(productFinded.product);
     } else {
         res.json(productFinded.msg)
@@ -131,6 +130,7 @@ routerCart.post('/add/:id_producto', (req, res) => {
 routerCart.delete('/delete/:id', (req,res) =>{
 
     const productDeleted = cart.deleteProduct(req.params.id);
+    archivoCart.writeFile(cart.cartContent);
     res.json(productDeleted)
 })
 
