@@ -48,7 +48,9 @@ const admin = true;
 /*Consulta lista de productos en el stock */
 routerProducts.get('/list/:id?', async (req, res) => {
     const productsOnFS = await archivoStock.readFile('stock.txt');
-    res.json(productsOnFS)
+    req.params.id == undefined ? 
+        res.json(productsOnFS) : 
+        res.json(productsOnFS.find(product=>product.id == req.params.id));
 });
 
 /*Agregar producto al stock */
@@ -93,14 +95,10 @@ routerProducts.put('/update/:id', async (req,res) => {
         } else {
 
             stock.listOfStock = [...productOnStock]
-
             const productUpload = stock.updateProduct({id: req.params.id, product: req.body})
             archivoStock.writeFile(stock.listOfStock);        
             res.json(productUpload);
-
         }
-
-
     } else {
         res.json({error: -1, descripción: `ruta /products/update método "PUT" no autorizada`});
     }
@@ -141,13 +139,13 @@ routerCart.get('/list/:id?', async (req, res) => {
 routerCart.post('/add/:id_producto', async (req, res) => {
 
     const productOnStock = await archivoStock.readFile('stock.txt');
+    console.log(productOnStock)
 
     const productFinded = productOnStock.findIndex(product=> product.id == req.params.id_producto);
 
     if (productFinded != -1 ) {
         const productsOnCart = await archivoCart.readFile('cart.txt');
         cart.cartContent = [...productsOnCart]
-
         if(productsOnCart.length == 0) {
             cart.addToCart(productOnStock[productFinded],0)
             archivoCart.writeFile(cart.cartContent);
@@ -158,11 +156,9 @@ routerCart.post('/add/:id_producto', async (req, res) => {
             archivoCart.writeFile(cart.cartContent);
             res.json({msg: 'Producto agregado'});
         }
-
     } else {
         res.json({msg: `No se encuentra producto con ese ID`})
     }
-
 });
 
 /*Borrar producto a carrito */
