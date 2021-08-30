@@ -83,15 +83,26 @@ routerProducts.post('/add', async (req, res) => {
 });
 
 /*Modificar producto al stock */
-routerProducts.put('/update/:id', (req,res) => {
+routerProducts.put('/update/:id', async (req,res) => {
 
     if (admin) {
 
-        
+        const productOnStock = await archivoStock.readFile('stock.txt');
+        const productFinded = productOnStock.findIndex((products) => products.id == req.params.id);
 
-        const productUpload = stock.updateProduct({id: req.params.id, product: req.body})
-        archivoStock.writeFile(stock.listOfStock);        
-        res.json(productUpload);
+        if (productFinded == -1) {
+            res.json(`No se encuentra producto con id`);
+
+        } else {
+
+            stock.listOfStock = [...productOnStock]
+
+            const productUpload = stock.updateProduct({id: req.params.id, product: req.body})
+            archivoStock.writeFile(stock.listOfStock);        
+            res.json(productUpload);
+
+        }
+
 
     } else {
         res.json({error: -1, descripción: `ruta /products/update método "PUT" no autorizada`});
