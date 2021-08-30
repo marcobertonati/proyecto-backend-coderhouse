@@ -48,7 +48,6 @@ const admin = true;
 /*Consulta lista de productos en el stock */
 routerProducts.get('/list/:id?', async (req, res) => {
     const productsOnFS = await archivoStock.readFile('stock.txt');
-    console.log(productsOnFS);
     res.json(productsOnFS)
 });
 
@@ -64,18 +63,16 @@ routerProducts.post('/add', async (req, res) => {
     if (admin) {
 
         let lastId = 0
-        if(stock.listOfStock[stock.listOfStock.length-1]!= undefined) {
+
+        if (stock.listOfStock[stock.listOfStock.length-1] != undefined) {
             lastId = stock.listOfStock[stock.listOfStock.length-1].id;
-            console.log(lastId);
-        }
+            }
 
         const newProduct = new Products(title = req.body.title, price= req.body.price, thumbnail= req.body.thumbnail, id = lastId+1, description = req.body.description, code = req.body.code, stocked = req.body.stocked);
     
         const productAdd = stock.addProduct(newProduct);
         archivoStock.writeFile(stock.listOfStock);        
         res.json(productAdd);
-
-
 
     } else {
         res.json({error: -1, descripción: `ruta /products/add método "POST" no autorizada`});
@@ -152,7 +149,6 @@ routerCart.post('/add/:id_producto', async (req, res) => {
         cart.cartContent = [...productsOnCart]
 
         if(productsOnCart.length == 0) {
-            console.log("Entro al if")
             cart.addToCart(productOnStock[productFinded],0)
             archivoCart.writeFile(cart.cartContent);
             res.json({msg: 'Producto agregado'})
@@ -171,7 +167,6 @@ routerCart.post('/add/:id_producto', async (req, res) => {
 
 /*Borrar producto a carrito */
 routerCart.delete('/delete/:id', (req,res) =>{
-
     const productDeleted = cart.deleteProduct(req.params.id);
     archivoCart.writeFile(cart.cartContent);
     res.json(productDeleted)
