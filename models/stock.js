@@ -35,13 +35,19 @@ class Stock {
 
         const productFinded = this.listOfStock.findIndex((product)=> product.id == productToChange.id);
 
+        if (productFinded != -1) {
 
-        if(productFinded != -1) {
+            productToChange.product.title ? 
+                this.listOfStock[productFinded].title = productToChange.product.title : ("Matiene su valor");
+        
+            productToChange.product.price ? 
+                this.listOfStock[productFinded].price = productToChange.product.price : ("Matiene su valor");
+    
+            productToChange.product.thumbnail ? 
+                this.listOfStock[productFinded].thumbnail = productToChange.product.thumbnail : ("Matiene su valor");
 
-            this.listOfStock[productFinded].title = productToChange.product.title;
-            this.listOfStock[productFinded].price = productToChange.product.price;
-            this.listOfStock[productFinded].thumbnail = productToChange.product.thumbnail;
             return `Producto actualizado`
+
         } else {
             return `No se encontró producto con id ${productToChange.id}`
         }
