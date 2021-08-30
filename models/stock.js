@@ -15,13 +15,11 @@ class Stock {
     }
 
     showProductOfStock = (id) => {
-        console.log('Ingresó a función');
-        console.log(id);
+  
+        const productFinded = this.listOfStock.find((product)=> product.id == id);
 
-        const productExist = this.listOfStock.some(product => id == product.id);
-
-        if (productExist) {
-            return {exist: true, product: this.listOfStock[id-1]};
+        if (productFinded != undefined) {
+            return {exist: true, msg: `Producto ${productFinded.title} agregado`, product: productFinded};
         } else {
             return {exist: false, msg: `Producto con id ${id} no existe`}
         }
@@ -35,12 +33,14 @@ class Stock {
 
     updateProduct = (productToChange) => {
 
-        const productExist = this.listOfStock.some(product => productToChange.id == product.id);
+        const productFinded = this.listOfStock.findIndex((product)=> product.id == productToChange.id);
 
-        if(productExist) {
-            this.listOfStock[productToChange.id-1].title = productToChange.product.title;
-            this.listOfStock[productToChange.id-1].price = productToChange.product.price;
-            this.listOfStock[productToChange.id-1].thumbnail = productToChange.product.thumbnail;
+
+        if(productFinded != -1) {
+
+            this.listOfStock[productFinded].title = productToChange.product.title;
+            this.listOfStock[productFinded].price = productToChange.product.price;
+            this.listOfStock[productFinded].thumbnail = productToChange.product.thumbnail;
             return `Producto actualizado`
         } else {
             return `No se encontró producto con id ${productToChange.id}`

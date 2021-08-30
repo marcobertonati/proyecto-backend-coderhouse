@@ -10,7 +10,6 @@ class Archivo {
     async writeFile (data) {
 
         try {
-            
             await fs.promises.writeFile(this.file, JSON.stringify(data, null, '\t'));
         } catch (error) {
             console.log(error);
@@ -22,11 +21,10 @@ class Archivo {
         try {
             const stock = await fs.promises.readFile(data, this.encoding);
             const stockJS = JSON.parse(stock)
-            console.log(stockJS);
+            return stockJS
         } catch (error) {
             console.log(error);
         }
-      
     }
 }
 

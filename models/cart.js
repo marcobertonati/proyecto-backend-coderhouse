@@ -3,14 +3,6 @@ class Cart {
     cartContent = [];
     idOnCart = 1;
 
-    constructor() {
-        // this.id = Cart.idCart++,
-        // this.timestamp = Date.now(),
-        // this.cartContent = []
-    }
-
-     
-
     showDataCart = () => {
         console.log(this.id);
         console.log(this.timestamp);
@@ -19,19 +11,35 @@ class Cart {
     }
 
     showCart = (id) => {
+        
         if(id === undefined) {
+
+            /*Chequea si viene con ID. Si no viene con ID muestra todo el carrito */
+            if (this.cartContent.length === 0) {
+                console.log('No hay productos en el carrito')
+                return `No hay productos en el carrito`;
+            }
             return this.cartContent;
         } else {
-            return this.cartContent[id-1]
+            /*Si viene con ID chequea que exista ese ID*/
+            const productToFind = this.cartContent.findIndex((productToFind) => productToFind.product.id == id);
+
+            if (productToFind != -1) {
+
+                const productFinded = this.cartContent.find((productFind) => productFind.product.id == id);
+    
+                return productFinded;
+
+            } else {
+                return `No hay producto con id ${id} en el carrito`
+            }
+
         }
     }
 
-    addToCart = (product) => {
-
-        console.log(product);
-        
+    addToCart = (product, id) => {        
         const newProduct = {
-            id: this.idOnCart++,
+            id: id+1,
             timestampCart: Date.now(),
             product: {...product}
         }

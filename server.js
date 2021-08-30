@@ -2,7 +2,7 @@
 
 /*-----Express------*/
 /*Creo servidor */
-const express = require("express");
+const express = require('express');
 /*Inicializamos express */
 const app = express();
 /*Router */
@@ -25,7 +25,7 @@ const archivoCart = new Archivo ('cart.txt');
 
 
 /*Body Parser: ya no es necesario */
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 /*Compression: sirve para que el req.body pese menos*/
 const compression = require ('compression');
@@ -46,15 +46,21 @@ const admin = true;
 
 /*------RUTAS STOCK-------*/
 /*Consulta lista de productos en el stock */
-routerProducts.get('/list/:id?', (req, res) => {
-    const productsStock = stock.showStock(req.params.id);
-    archivoStock.readFile('stock.txt');
-    res.json(productsStock);
+routerProducts.get('/list/:id?', async (req, res) => {
+    const productsOnFS = await archivoStock.readFile('stock.txt');
+    console.log(productsOnFS);
+    res.json(productsOnFS)
 });
 
 /*Agregar producto al stock */
-routerProducts.post('/add', (req, res) => {
+routerProducts.post('/add', async (req, res) => {
 
+    if (stock.listOfStock.length === 0) {
+        const productsOnFS = await archivoStock.readFile('stock.txt');
+        stock.listOfStock.push(...productsOnFS);
+    }
+
+  
     if (admin) {
 
         let lastId = 0
@@ -69,6 +75,8 @@ routerProducts.post('/add', (req, res) => {
         archivoStock.writeFile(stock.listOfStock);        
         res.json(productAdd);
 
+
+
     } else {
         res.json({error: -1, descripción: `ruta /products/add método "POST" no autorizada`});
     }
@@ -78,7 +86,6 @@ routerProducts.post('/add', (req, res) => {
 routerProducts.put('/update/:id', (req,res) => {
 
     if (admin) {
-
         const productUpload = stock.updateProduct({id: req.params.id, product: req.body})
         archivoStock.writeFile(stock.listOfStock);        
         res.json(productUpload);
@@ -91,13 +98,10 @@ routerProducts.put('/update/:id', (req,res) => {
 
 /*Eliminar producto al stock */
 routerProducts.delete('/delete/:id', (req, res) => {
-
     if (admin) {
-        
         const productDeleted = stock.deleteProduct(req.params.id);
         archivoStock.writeFile(stock.listOfStock);        
         res.json(productDeleted);
-
     } else {
         res.json({error: -1, descripción: `ruta /products/delete método "DELETE" no autorizada`});
     }
@@ -106,24 +110,49 @@ routerProducts.delete('/delete/:id', (req, res) => {
 
 /*------RUTAS CARRITO-------*/
 /*Consulta lista de productos en carrito */
-routerCart.get('/list/:id?', (req, res) => {
-    const productsOnCart = cart.showCart(req.params.id);
-    archivoCart.readFile('cart.txt');
-    res.json(productsOnCart);
+routerCart.get('/list/:id?', async (req, res) => {
+
+    const productsOnCart = await archivoCart.readFile('cart.txt');
+
+    if (req.params.id == undefined) {
+        res.json(productsOnCart)
+    } else {
+        const productFinded = productsOnCart.findIndex(productsOnCart => productsOnCart.product.id == req.params.id);
+        if (productFinded != -1) {
+            res.json(productsOnCart[productFinded]);
+        } else {
+            res.json(`No hay productos con ${req.params.id} en su carrito`)
+        }
+    }
 });
 
 /*Agregar producto a carrito */
-routerCart.post('/add/:id_producto', (req, res) => {
+routerCart.post('/add/:id_producto', async (req, res) => {
 
-    const productFinded = stock.showProductOfStock(req.params.id_producto);
+    const productOnStock = await archivoStock.readFile('stock.txt');
 
-    if (productFinded.exist) {
-        cart.addToCart(productFinded.product);
-        archivoCart.writeFile(cart.cartContent);
-        res.json(productFinded.product);
+    const productFinded = productOnStock.findIndex(product=> product.id == req.params.id_producto);
+
+    if (productFinded != -1 ) {
+        const productsOnCart = await archivoCart.readFile('cart.txt');
+        cart.cartContent = [...productsOnCart]
+
+        if(productsOnCart.length == 0) {
+            console.log("Entro al if")
+            cart.addToCart(productOnStock[productFinded],0)
+            archivoCart.writeFile(cart.cartContent);
+            res.json({msg: 'Producto agregado'})
+        } else {
+            const lastId = productsOnCart[productsOnCart.length-1].id;
+            cart.addToCart(productOnStock[productFinded], lastId);
+            archivoCart.writeFile(cart.cartContent);
+            res.json({msg: 'Producto agregado'});
+        }
+
     } else {
-        res.json(productFinded.msg)
+        res.json({msg: `No se encuentra producto con ese ID`})
     }
+
 });
 
 /*Borrar producto a carrito */
